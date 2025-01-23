@@ -1,13 +1,8 @@
 # pip install fastapi uvicorn pydantic Pillow numpy requests
 # pip install ultralytics opencv-python python-multipart
-from multiprocessing.spawn import import_main_path
 # uvicorn main:app --reload로 실행
 
 ######################################################
-
-# post 요청을 통해 이미지가 전송되면 인공지능 객체 탐지 모델을 이용해서 객체를 탐지하고
-# 그 결과 이미지를 base64 인코딩된 문자열로 반환하는 서비스를 구현
-# 라이브러리 및 모듈 임포트
 from fastapi import FastAPI, UploadFile, File, Form  # 라우팅, 파일업로드, 폼데이터처리
 # JSONResponse : json 응답을 생성함
 from pydantic import BaseModel  # pydantic의 데이터 모델을 정의
@@ -17,15 +12,28 @@ from PIL import Image  # Pillow 이미지 처리 라이브러리
 import numpy as np  # 배열 및 행렬 연산을 위한 라이브러리
 from ultralytics import YOLO  # yolo8 모델 사용 울트라리틱스 https://docs.ultralytics.com/usage/python/#using-trainers
 import cv2  # 컴퓨터 비전 작업을 위한 라이브러리 https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0_%EB%B9%84%EC%A0%84
+from starlette.middleware.cors import CORSMiddleware    # CORS 오류 방지 위한 미들웨어 추가
 
-app = FastAPI();  # 애플리케이션 인스턴스 생성
+app = FastAPI()  # 애플리케이션 인스턴스 생성
+origins = [
+    "http://192.168.0.212:80", "http://localhost:80", "http://127.0.0.1:80"
+]
 
-model = YOLO('yolov8n.pt')  # YOLOv8 모델 로드 (yolov8n.pt 모델의 가중치파일)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+model = YOLO('yolo11n.pt')  # YOLOv8 모델 로드 (yolov8n.pt 모델의 가중치파일)
 
 
 class DetectionResult(BaseModel):  # pydantic 을 사용하여 데이터 모델을 정의 (응답 데이터를 구조화)
     message: str  # 클라이언트가 보낸 메세지
     image: str  # Base64로 인코딩된 탐지 결과 이미지
+
 
 
 # 객체 탐지 함수
@@ -45,7 +53,7 @@ def detect_objects(image: Image):
             x1, y1, x2, y2 = map(int, box)  # 좌표를 정수로 변환
             label = class_names[int(class_ids)]  # 클래스 이름
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            cv2.putText(img, f'{label} {confidences:.2f}', (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
+            cv2.putText(img, f'{label} {confidences:.2f}', (x1, y1), cv2.FONT_HERSHEY_PLAIN, 1, (0,153,255), 2)
 
     result_image = Image.fromarray(img)  # 결과 이미지를 PIL로 변환
     return result_image
@@ -55,7 +63,7 @@ def detect_objects(image: Image):
 @app.get("/")  # get방식의 요청 테스트용 메시지를 json 형식으로 반환
 # async def read_root():
 async def index():
-    return {"message": "Hello FastAPI"}
+    return {"message": "TF AI Project test"}
 
 
 # 객체 탐지 엔드 포인트
@@ -79,12 +87,13 @@ async def detect_service(message: str = Form(...), file: UploadFile = File(...))
     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
     return DetectionResult(message=message, image=img_str)
-    # 결론 : http://localhost:8001/detect 경로에 post 요청 처리
+    # 결론 : http://localhost:8080/detect 경로에 post 요청 처리
     # 클라이언트로 업로드된 이미지를 읽고 PIL 이미지로 변환하고, 알파 채널이 있으면 알파 채널을 제거
     # https://developer.mozilla.org/ko/docs/Glossary/Alpha
     # 객체 탐지 함수를 호출하여 탐지 결과 이미지를 얻는다.
     # 탐지 결과 이미지를 Base64 문자열로 인코딩
     # DetectionResult 모델을 사용하여 메시지와 인코딩된 이미지를 json 응답으로 반환
+
 
 
 if __name__ == "__main__":  # uvicorn main:app 인경우 포트와 uvicorn 실행
