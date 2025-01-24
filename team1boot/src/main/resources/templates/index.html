@@ -96,16 +96,17 @@ footer i {
 <section class="section-padding" id="about">
   <div class="container">
     <h2 class="text-center mb-5">About</h2>
-    <div class="row">
-      <div class="col-md-6">
-<!--        <h3>프로젝트 소개</h3>-->
-<!--        <p>프로젝트 소개를 적으세요 ^^</p>-->
-      </div>
-      <div class="col-md-6">
-<!--        <h3>조원 소개</h3>-->
-<!--        <p>인원 기입</p>-->
-      </div>
-      <div class="col-md-6">
+
+    <div class="col-md-6">
+      <!--        <h3>프로젝트 소개</h3>-->
+      <!--        <p>프로젝트 소개를 적으세요 ^^</p>-->
+    </div>
+    <div class="col-md-6">
+      <!--        <h3>조원 소개</h3>-->
+      <!--        <p>인원 기입</p>-->
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
         <div class="analysis-form">
           <h3>주요 기능</h3>
           <ul>
@@ -114,6 +115,7 @@ footer i {
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -128,7 +130,7 @@ footer i {
           <form method="post" enctype="multipart/form-data" id="fileUploadForm">
             <div class="mb-4">
               <label for="message" class="form-label">데이터 :</label>
-              <input type="text" class="form-control" name="message" value="test hello">
+              <input type="text" class="form-control" name="message" value="" placeholder="텍스트를 입력하세요">
             </div>
             <div class="mb-4">
               <label class="form-label">파일 :</label>
@@ -137,7 +139,7 @@ footer i {
               </div>
             </div>
             <div class="mb-4">
-              <button type="button" class="btn btn-primary">비동기 요청</button>
+              <input type="button" value="비동기 요청">
             </div>
           </form>
 
@@ -155,15 +157,17 @@ footer i {
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  var button = document.querySelector("button[type=button]");
+<script type="text/javascript">
+  var button = document.querySelector("input[type=button]");
+
   button.addEventListener("click", function(){
       var form = document.getElementById("fileUploadForm")
       var form_data = new FormData(form)
       button.disabled = true;
 
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://localhost:80/java_service", true);
+
+      xhr.open("POST", "http://localhost:80/tf/service", true);
 
       xhr.onload = function(){
           if(xhr.status >= 200 && xhr.status < 300){
@@ -189,7 +193,7 @@ footer i {
       }
 
       xhr.send(form_data);
-  });
+  })
 </script>
 
 <!-- Footer -->
@@ -221,7 +225,6 @@ footer i {
         <h5>Contact</h5>
         <ul class="list-unstyled">
 
-
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
           </svg> 조장 : 이규현
@@ -239,8 +242,8 @@ footer i {
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
           </svg> 조원 : 유병철
-          <a href="https://github.com/Leeyounghun94" class="text-decoration-none">
-            https://github.com/Leeyounghun94
+          <a href="https://github.com/yoobyoungcheol" class="text-decoration-none">
+            https://github.com/yoobyoungcheol
           </a><br>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
@@ -255,7 +258,7 @@ footer i {
           </svg> Team Project GitHub
           <a href="https://github.com/gyuheon1/AIProjectTeam1" class="text-decoration-none">
             https://github.com/gyuheon1/AIProjectTeam1
-          </a><br>
+          </a>
         </ul>
       </div>
     </div>
