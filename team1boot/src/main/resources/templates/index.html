@@ -59,6 +59,23 @@ footer hr {
 footer i {
     margin-right: 0.5rem;
 }
+    .table tr {
+    cursor: pointer;
+}
+
+.table tr:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.result-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+#analysisResult {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
   </style>
 </head>
 <body>
@@ -72,13 +89,12 @@ footer i {
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#demo">Demo</a>
+          <a class="nav-link active" href="">
+            <i class="bi bi-house-door"></i> Home
+            <!--             <i class="bi bi-house-door"></i> class-->
+            <!--            01.26 -> 현재 Home 버튼 밖에 없으나, 추가 하신다면 이렇게 만드시면 됩니다.-->
+          </a>
+
         </li>
       </ul>
     </div>
@@ -92,62 +108,114 @@ footer i {
   </div>
 </section>
 
-<!-- About 섹션 -->
-<section class="section-padding" id="about">
+
+
+<!-- 게시판 섹션 -->
+<section class="section-padding" id="demo">
   <div class="container">
-    <h2 class="text-center mb-5">About</h2>
-    <div class="row">
-      <div class="col-md-6">
-        <!--        <h3>프로젝트 소개</h3>-->
-        <!--        <p>프로젝트 소개를 적으세요 ^^</p>-->
+    <h2 class="text-center mb-5">객체 탐지 게시판</h2>
+
+    <!-- 게시글 목록 화면 -->
+    <div id="listView">
+      <div class="row mb-4">
+        <div class="col">
+          <div class="d-flex justify-content-between">
+            <input type="text" class="form-control w-25" placeholder="검색어를 입력하세요" onkeyup="searchPosts(this.value)">  <!-- 검색 기능은 테스트 아직 X -->
+            <button class="btn btn-primary" onclick="showWriteForm()">글쓰기</button>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <!--        <h3>조원 소개</h3>-->
-        <!--        <p>인원 기입</p>-->
+
+      <!-- 게시글 목록 테이블 -->
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+          <tr>
+            <th width="10%">번호</th>
+            <th width="50%">데이터</th>
+            <th width="20%">작성자</th>
+            <th width="20%">작성일시</th>
+          </tr>
+          </thead>
+          <tbody id="boardList">
+          </tbody>
+        </table>
       </div>
-      <div class="col-md-6">
-        <div class="analysis-form">
-          <h3>주요 기능</h3>
-          <ul>
-            <li>기능 1</li>
-          </ul>
+    </div>
+
+    <!-- 게시글 작성하기 섹션 -->
+    <div id="writeForm" class="card mt-4" style="display: none;">
+      <div class="card-body">
+        <form id="demoForm" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">데이터</label>
+            <input type="text" class="form-control" id="message" name="message" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">파일</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary" onclick="hideWriteForm()">취소</button>
+            <button type="submit" class="btn btn-primary">객체 탐지 실행</button>
+          </div>
+        </form>
+
+        <!-- 분석 결과 표시 영역 -->
+        <div id="analysisResult" class="mt-4" style="display: none;">
+          <h5>분석 결과</h5>
+          <div id="resultContent" class="border rounded p-3">
+            <!-- 결과가 여기에 표시됨 -->
+          </div>
+          <div class="text-end mt-3">
+            <button type="button" class="btn btn-secondary" onclick="hideWriteForm()">취소</button>
+            <button type="button" class="btn btn-primary" onclick="saveAsPost()">등록하기</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- Demo 섹션 -->
-<section class="section-padding" id="demo">
-  <div class="container">
-    <h2 class="text-center mb-5">Demo</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="analysis-form">
 
-          <form method="post" enctype="multipart/form-data" id="fileUploadForm">
-            <div class="mb-4">
-              <label for="message" class="form-label">데이터 :</label>
-              <input type="text" class="form-control" name="message" value="test hello">
+    <!-- 게시글 상세 보기 화면 -->
+    <div id="detailView" style="display: none;">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">게시글 상세</h5>
+          <div>
+            <button class="btn btn-primary btn-sm" onclick="showEditForm()">수정</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePost()">삭제</button>
+            <button class="btn btn-secondary btn-sm" onclick="showListView()">목록</button>
+          </div><!-- 게시글 눌렀을 때 상단의 버튼들-->
+        </div>
+        <div class="card-body">
+          <div id="postDetail">
+            <!-- 상세 내용 표시 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 게시글 수정하기 -->
+    <div id="editForm" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">게시글 수정</h5>
+        </div>
+        <div class="card-body">
+          <form id="postEditForm" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label class="form-label">데이터</label>
+              <input type="text" class="form-control" id="editMessage" name="message" required>
             </div>
-            <div class="mb-4">
-              <label class="form-label">파일 :</label>
-              <div class="d-flex gap-2">
-                <input type="file" name="file" class="form-control">
-              </div>
+            <div class="mb-3">
+              <label class="form-label">파일</label>
+              <input type="file" class="form-control" id="editFile" name="file">
             </div>
-            <div class="mb-4">
-              <button type="button" class="btn btn-primary">비동기 요청</button>
+            <div class="text-end">
+              <button type="button" class="btn btn-secondary" onclick="cancelEdit()">취소</button>
+              <button type="submit" class="btn btn-primary">수정하기</button>
             </div>
           </form>
-
-          <div id="result" class="mt-4">
-            여기에 요청 결과가 출력되어야 합니다.
-          </div>
-
-          <div class="mt-3">
-            <a href="ai" class="text-primary text-decoration-none">실시간 스트리밍</a>
-          </div>
         </div>
       </div>
     </div>
@@ -156,40 +224,388 @@ footer i {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  var button = document.querySelector("button[type=button]");
-  button.addEventListener("click", function(){
-      var form = document.getElementById("fileUploadForm")
-      var form_data = new FormData(form)
-      button.disabled = true;
+  let posts = [];   // 게시글들을 저장할 객체를 배열로 지정
+  let currentId = 0;  // 게시글의 고유 번호를 관리할 변수
+  let currentPostId = null; // 현재 보고 있는 게시글의 ID
+  let currentAnalysisResult = null; // 분석 결과를 임시 저장할 변수
 
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://localhost:80/tf/service", true);
+  // 페이지가 열릴 때 실행되는 함수
+  window.onload = function() {
+      loadFromLocalStorage(); // LocalStorage에 저장된 데이터를 가져온다.
+      updateBoardList();  // 게시글 목록을 화면에 표시한다.
+  };
 
-      xhr.onload = function(){
-          if(xhr.status >= 200 && xhr.status < 300){
-              var response = JSON.parse(xhr.responseText);
-              var resultDiv = document.getElementById("result");
-              resultDiv.innerHTML = response.message + "<br>";
-              var img_src = "data:image/png;base64," + response.image;
-              var img = document.createElement("img");
-              img.src = img_src;
-              resultDiv.appendChild(img);
-              button.disabled = false;
-          } else {
-              console.error("ERROR: " + xhr.statusText);
-              alert("fail " + xhr.statusText);
-              button.disabled = false;
-          }
+  // 폼 제출 및 객체 탐지 실행
+  document.getElementById('demoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      // demoForm이라는 ID가진 폼을 찾아서 객체 탐지 실행 버튼 눌렀을 때 실행되는 함수
+
+      const form = new FormData(this);  // form이라는 변수를 지정
+      const submitButton = this.querySelector('button[type="submit"]'); // submit버튼(객체 탐지 실행 버튼) 찾아서 변수에 저장
+      submitButton.disabled = true;
+
+      try {
+          // API 요청을 보내며
+          const response = await fetch('http://localhost:80/tf/service', {
+              method: 'POST', // POST 방식으로 전송
+              body: form  // 폼 데이터를 body에 담아 전송
+          });
+
+          if (!response.ok) throw new Error('API 요청 실패');
+          // 만약 정상이 아니라면 에러 발생
+
+          const result = await response.json();
+          // result 라는 변수에다가 응답을 JSON형식으로 저장한다.
+
+          currentAnalysisResult = { // 분석한 결과를 currentAnalysisResult라는 지정하여 저장
+              message: form.get('message'), // 입력한 메세지
+              fileName: form.get('file').name,  // 파일 이름
+              result: result  // 결과
+          };
+
+          showAnalysisResult(result);
+          // 결과를 화면에 표시
+
+          // 폼 숨기고 결과 영역 표시
+          document.getElementById('demoForm').style.display = 'none';
+          document.getElementById('analysisResult').style.display = 'block';
+
+      } catch (error) {
+          alert('오류가 발생했습니다: ' + error.message);
+          // 에러가 발생하면 알럿으로 메세지 출력
+      } finally {
+          submitButton.disabled = false;
+          // 버튼 활성화로 만들기(결과에 따라)
       }
-
-      xhr.onerror = function(){
-          console.error("ERROR: " + xhr.statusText);
-          alert("fail " + xhr.statusText);
-          button.disabled = false;
-      }
-
-      xhr.send(form_data);
   });
+
+  // 분석 결과 표시
+  function showAnalysisResult(result) {
+    // 상단의 함수에서  showAnalysisResult(result); 를 함수로 지정하여 결과를 화면에 표시하는 함수
+
+      const resultDiv = document.getElementById('analysisResult');
+      const contentDiv = document.getElementById('resultContent');
+      // resultDiv, contentDiv라는 변수를 지정하여 각각 div를 저장한다.
+
+      contentDiv.innerHTML = `
+          <p>${result.message}</p>
+          <img src="data:image/png;base64,${result.image}" class="img-fluid">
+      `;
+      // 이미지 형식을 base64형식으로 표시하고 이미지를 반응형으로 만든다.
+
+      resultDiv.style.display = 'block';
+      // 결과를 화면에 보이게 지정한다.
+  }
+
+  function saveAsPost() {
+      // 게시글을 저장하는 함수
+
+      if (!currentAnalysisResult) return;
+      // 만약에 currentAnalysisResult가 없거나 null이면 함수 리턴
+
+      addPost(currentAnalysisResult);
+      // addPost를 지정하여 게시글을 저장한다.
+
+      hideWriteForm();
+      currentAnalysisResult = null;
+      alert('게시글이 등록되었습니다.');
+      // 게시글이 등록이 됐으면 알럿으로 표시해주기.
+  }
+
+  function addPost(data) {
+  // 새로운 게시글을 추가하는 함수
+
+      currentId++;  // 게시글 번호 +1 증가 시키기.
+
+      const post = {
+      // 새로운 게시글 만들 때 객체 생성
+
+          id: currentId,  // 게시글 번호
+          message: data.message,  // 작성자가 입력한 글
+          fileName: data.fileName,  // 업로드한 파일 이름
+          result: data.result,  //객체 탐지를 한 결과
+          author: '사용자',  // 작성자 이름은 "사용자" (DB 없는 관계로 임시 설정)
+          date: new Date().toLocaleString() // 글 작성한 날짜와 시간 표시
+      };
+
+      posts.unshift(post);
+      // 새로운 게시글이 작성이 되었으면 맨 위로 배치하기(최신순)
+      saveToLocalStorage();
+      // localStorage에 변경된 게시글 목록 저장
+      updateBoardList();
+      // 게시글 리스트를 업데이트
+  }
+
+  function updateBoardList() {
+      // 게시글 목록을 보여주는 함수
+
+      const tbody = document.getElementById('boardList');
+      // tbody 라는 변수를 지정하여 boardList 찾는다.
+
+      tbody.innerHTML = posts.map(post => `
+          <tr onclick="showPostDetail(${post.id})">
+              <td>${post.id}</td>
+              <td>${post.message}</td>
+              <td>${post.author}</td>
+              <td>${post.date}</td>
+          </tr>
+      `).join('');
+      // tr에 해당하는 게시글 번호, 제목, 작성자, 일시를 map형식으로 배열처리하고 테이블로 만든다.
+  }
+
+  function showPostDetail(id) {
+    // 게시글을 눌렀을 때 상세보기 보여주는 함수
+
+      const post = posts.find(p => p.id === id);
+      // post라는 변수를 만들어 posts배열에 있는 클릭한 게시글id와 일치하는 id를 찾는다.
+
+      if (!post) return;
+      // 게시글을 못찾으면 리턴
+
+      currentPostId = id;
+      // 현재 보고 있는 게시물의 id를 저장하는데 수정, 삭제 때 쓴다.
+
+      const detailDiv = document.getElementById('postDetail');
+      // detailDiv라는 변수를 지정하여 postDetail 상세 내용 폼을 찾는다.
+
+      detailDiv.innerHTML = `
+          <div class="mb-4">
+              <h4>${post.message}</h4>
+              <div class="text-muted mb-3">
+                  <small>작성자: ${post.author} | 작성일: ${post.date}</small>
+              </div>
+              <div class="border-top pt-3">
+                  <div class="mb-3">
+                      <strong>분석 결과:</strong>
+                      <p>${post.result.message}</p>
+                  </div>
+                  <div class="analysis-image">
+                      <img src="data:image/png;base64,${post.result.image}" class="img-fluid">
+                  </div>
+              </div>
+          </div>
+      `;
+      // 상세 보기에서 게시글 제목, 내용, 작성자, 작성일시, 분석결과 등 화면에 표시하게 만든다.
+
+      // 화면 전환
+      document.getElementById('listView').style.display = 'none';
+      document.getElementById('detailView').style.display = 'block';
+      document.getElementById('writeForm').style.display = 'none';
+  }
+
+  function showListView() {
+  // 게시글의 목록을 보여주는 함수
+
+      document.getElementById('listView').style.display = 'block';  // 게시글의 목록 표시
+      document.getElementById('detailView').style.display = 'none'; // 목록 표시할때는 상세보기 숨기기
+      document.getElementById('editForm').style.display = 'none'; // 목록 표시할때는 수정버튼 숨기기
+      currentPostId = null;
+  }
+
+
+  function showEditForm() {
+  // 게시글 수정할때 실행되는 함수
+
+      const post = posts.find(p => p.id === currentPostId);
+      if (!post) return;
+      // 클릭한 게시글id와 일치하는 id를 찾고 없으면 리턴
+
+
+      document.getElementById('editMessage').value = post.message;  // 클릭한 게시글의 내용을 보여준다.
+      document.getElementById('detailView').style.display = 'none'; // 상세보기 숨기게 하고
+      document.getElementById('editForm').style.display = 'block';  // 지금 필요한 수정하는 것을 보여주게 한다.
+  }
+
+  function cancelEdit() {
+  // 게시글 수정할 때 취소하기 버튼 눌렀을 때 실행되는 함수
+
+      document.getElementById('editForm').style.display = 'none';
+      document.getElementById('detailView').style.display = 'block';
+  }
+
+  document.getElementById('postEditForm').addEventListener('submit', async function(e) {
+    // 게시글 수정할 때 실행되는 함수
+
+      e.preventDefault();
+
+      const form = new FormData(this);
+      const submitButton = this.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      // form 변수와 submitButton 변수를 지정하여 데이터 수집 및 버튼 비활성화
+
+      try {
+          if (form.get('file').size > 0) {
+              const response = await fetch('http://localhost:80/tf/service', {
+                  method: 'POST',
+                  body: form
+              });
+              // 만약 새로운 파일이 업로드가 될 경우 객체 탐지 API를 호출하여 실행
+
+              if (!response.ok) throw new Error('API 요청 실패');
+              const result = await response.json();
+              // 응답에서 오류가 나면 에러 발생
+
+              updatePost(currentPostId, {
+                  message: form.get('message'), // 수정된 메세지
+                  fileName: form.get('file').name,  // 수정된 파일 이름
+                  result: result // 새로운 분석 결과
+              });
+              // 새로운 파일에 객체 탐지 결과에 따라 게시글 업데이트
+
+          } else {
+          // 아니면 파일의 변경이 없는 경우는
+
+              const post = posts.find(p => p.id === currentPostId);
+              // id가 동일한 기존 게시글 찾고
+
+              updatePost(currentPostId, {
+                  message: form.get('message'), // 수정된 메세지
+                  fileName: post.fileName,  // 기존 파일이름 유지
+                  result: post.result   // 분석 결과 유지
+              });
+          }
+
+          alert('게시글이 수정되었습니다.');
+          showPostDetail(currentPostId);
+          // 수정하기 버튼을 눌렀을 때 알럿으로 표시, 그리고 상세보기 페이지로 이동.
+
+      } catch (error) {
+          alert('오류가 발생했습니다: ' + error.message);
+          // 에러 발생 시 알럿으로 메세지 출력
+      } finally {
+          submitButton.disabled = false;
+      }
+  });
+
+  function deletePost() {
+   // 삭제하기 버튼 눌렀을 때 실행되는 함수
+
+      if (!confirm('정말 삭제하시겠습니까?')) return;
+      // 메세지를 표시해서 되묻는다.
+
+      posts = posts.filter(post => post.id !== currentPostId);
+      // 삭제가 된다면 현재 게시글 삭제하고 나머지 게시글만 표시.
+
+      saveToLocalStorage();
+      // 변경된 게시글을 LocalStorage에 저장한다.
+
+      alert('게시글이 삭제되었습니다.');
+      // 게시글이 삭제가 완료되면 알럿으로 표시.
+
+      showListView(); // 목록화면으로 이동 되고
+      updateBoardList();  // 게시글 목록이 새로고침이 된다.
+  }
+
+  function updatePost(id, newData) {
+  // 게시글 수정 함수
+
+      const index = posts.findIndex(post => post.id === id);
+      // index라는 변수를 지정하여 게시글의 id를 찾는다.
+
+      if (index !== -1) {
+          posts[index] = {
+              ...posts[index],
+              ...newData,
+              date: new Date().toLocaleString()
+          };
+          // 게시글을 찾았다면 수정을 행하고 기존 데이터를 새로운 데이터로 덮어쓰기. 마지막으로 수정일시 까지 수정
+
+          saveToLocalStorage(); // 변경사항을 LocalStorage에 저장하기.
+          updateBoardList();  // 게시글 목록을 새로고침한다.
+      }
+  }
+
+
+  function loadFromLocalStorage() {
+
+  // localStorage에 저장된 데이터를 불러오는 함수
+
+      const savedPosts = localStorage.getItem('demoPosts');
+      // demoPosts로 저장된 게시글 데이터를 savedPosts 변수에 저장
+
+      const savedId = localStorage.getItem('demoCurrentId');
+      // demoCurrentId로 마지막 게시글 ID를 가져와 savedId 변수에 저장한다.
+
+      if (savedPosts) posts = JSON.parse(savedPosts);
+      // 저장된 게시글이 있으면 JSON형식을 JavaScript 형식 객체로 변환한다.
+
+      if (savedId) currentId = parseInt(savedId);
+      // ID가 있다면 문자열을 정수형으로 변환한다.
+
+      /*  여기서, localStorage 이란?
+          웹 브라우저에서 제공하는 데이터 저장소이다.
+          페이지를 닫았다가 열어도 데이터가 유지가 되며, 문자열 형태로 데이터 저장이 가능하다.
+          도메인별로 별도의 저장 공간이 제공이 된다.(보안)
+          브라우저 마다 차이가 있지만 5MB ~ 10MB 저장이 가능하다.
+
+          장점 : 서버 부하 감소
+                오프라인에서도 데이터 사용 가능
+                페이지를 새로고침해도 데이터 유지 가능
+                간단한 데이터를 저장하는데 적합.
+
+          단점 : 문자열만 저장이 가능(객체 JSON 변환 필수)
+                용량 제한
+                민간한 정보는 보안 때문에 저장하면 안된다.
+                동기적으로 동작한다.(대용량 처리할 시 성능에 영향이 간다.)
+
+          현 프로젝트에서는 DB 대신 임시 데이터 저장소인 localStorage를 사용하여 데이터를 저장한다.
+      */
+  }
+
+  function saveToLocalStorage() {
+    // 데이터를 localStorage에다가 저장하는 함수
+
+      localStorage.setItem('demoPosts', JSON.stringify(posts));
+      // 게시글의 배열을 JSON 문자열로 변환하여 저장한다.
+
+      localStorage.setItem('demoCurrentId', currentId.toString());
+      // 현재 게시글 ID를 문자열로 변환하여 저장.
+
+  }
+
+  function showWriteForm() {
+    // 게시글 작성하기 버튼 눌렀을 때 실행되는 함수
+
+      document.getElementById('writeForm').style.display = 'block';
+      document.getElementById('demoForm').style.display = 'block';
+      document.getElementById('analysisResult').style.display = 'none';
+      document.getElementById('demoForm').reset();
+      currentAnalysisResult = null;
+
+      // 데이터 입력, 파일 선택, 데이터 분석 결과 등 폼의 모든 입력 필드를 가져온다.
+  }
+
+  function hideWriteForm() {
+      // 글 쓰기를 숨기는 함수
+      // 취소 버튼 클릭, 글쓰기 중단하고 목록으로 돌아갈 때, 다른 화면으로 전환될 때 실행되는 함수
+      // 즉, 글쓰기를 취소하거나 중단할 때 행하는 함수
+      document.getElementById('writeForm').style.display = 'none';
+      document.getElementById('demoForm').style.display = 'block';
+      document.getElementById('analysisResult').style.display = 'none';
+      document.getElementById('demoForm').reset();
+      currentAnalysisResult = null;
+  }
+
+  function searchPosts(keyword) {
+      if (!keyword.trim()) {
+          updateBoardList();
+          return;
+      }
+
+      const filtered = posts.filter(post =>
+          post.message.toLowerCase().includes(keyword.toLowerCase())
+      );
+
+      const tbody = document.getElementById('boardList');
+      tbody.innerHTML = filtered.map(post => `
+          <tr onclick="showPostDetail(${post.id})">
+              <td>${post.id}</td>
+              <td>${post.message}</td>
+              <td>${post.author}</td>
+              <td>${post.date}</td>
+          </tr>
+      `).join('');
+  }
 </script>
 
 <!-- Footer -->
@@ -197,7 +613,7 @@ footer i {
   <div class="container">
     <div class="row">
 
-      <!-- Project INFO  -->
+      <!-- Team Project 정보  -->
       <div class="col-md-4 mb-3">
         <h5>Python + Spring Boot AI Project</h5>
         <p class="mb-0">1조 TF Team Project </p>
@@ -221,7 +637,6 @@ footer i {
         <h5>Contact</h5>
         <ul class="list-unstyled">
 
-
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
           </svg> 조장 : 이규현
@@ -239,8 +654,8 @@ footer i {
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
           </svg> 조원 : 유병철
-          <a href="https://github.com/Leeyounghun94" class="text-decoration-none">
-            https://github.com/Leeyounghun94
+          <a href="https://github.com/yoobyoungcheol" class="text-decoration-none">
+            https://github.com/yoobyoungcheol
           </a><br>
 
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
@@ -255,7 +670,7 @@ footer i {
           </svg> Team Project GitHub
           <a href="https://github.com/gyuheon1/AIProjectTeam1" class="text-decoration-none">
             https://github.com/gyuheon1/AIProjectTeam1
-          </a><br>
+          </a>
         </ul>
       </div>
     </div>

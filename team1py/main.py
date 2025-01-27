@@ -14,6 +14,9 @@ from ultralytics import YOLO  # yolo8 모델 사용 울트라리틱스 https://d
 import cv2  # 컴퓨터 비전 작업을 위한 라이브러리 https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0_%EB%B9%84%EC%A0%84
 from starlette.middleware.cors import CORSMiddleware    # CORS 오류 방지 위한 미들웨어 추가
 
+import os
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'  # 라이브러리 충돌 해결
+
 app = FastAPI()  # 애플리케이션 인스턴스 생성
 origins = [
     "http://192.168.0.212:80", "http://localhost:80", "http://127.0.0.1:80"
@@ -27,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-model = YOLO('yolo11n.pt')  # YOLOv8 모델 로드 (yolov8n.pt 모델의 가중치파일)
+model = YOLO('/python-workspace/AIProject01/team1py/best.pt')  # YOLOv8 모델 로드 (yolov8n.pt 모델의 가중치파일)
 
 
 class DetectionResult(BaseModel):  # pydantic 을 사용하여 데이터 모델을 정의 (응답 데이터를 구조화)
@@ -53,7 +56,7 @@ def detect_objects(image: Image):
             x1, y1, x2, y2 = map(int, box)  # 좌표를 정수로 변환
             label = class_names[int(class_ids)]  # 클래스 이름
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            cv2.putText(img, f'{label} {confidences:.2f}', (x1, y1), cv2.FONT_HERSHEY_PLAIN, 1, (0,153,255), 2)
+            cv2.putText(img, f'{label} {confidences:.2f}', (x1, y1), cv2.FONT_HERSHEY_PLAIN, 1, (0,153,255), 2, 2)
 
     result_image = Image.fromarray(img)  # 결과 이미지를 PIL로 변환
     return result_image
@@ -97,8 +100,8 @@ async def detect_service(message: str = Form(...), file: UploadFile = File(...))
 
 
 if __name__ == "__main__":  # uvicorn main:app 인경우 포트와 uvicorn 실행
-    import uvicorn
 
+    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080)
 
 # uvicorn main:app --reload로 실행
