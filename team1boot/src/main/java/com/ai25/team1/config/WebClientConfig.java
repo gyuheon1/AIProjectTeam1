@@ -16,7 +16,11 @@ public class WebClientConfig {
     WebClient webClient(){
         return WebClient.builder()
                 .exchangeStrategies(ExchangeStrategies.builder()
+<<<<<<< HEAD
                         .codecs(configure -> configure.defaultCodecs().maxInMemorySize(-1)).build())
+=======
+                        .codecs(configuere -> configuere.defaultCodecs().maxInMemorySize(-1)).build())
+>>>>>>> LYH
                 .baseUrl(pythonServer)
                 .build();
     }

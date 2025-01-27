@@ -99,6 +99,6 @@ async def detect_service(message: str = Form(...), file: UploadFile = File(...))
 if __name__ == "__main__":  # uvicorn main:app 인경우 포트와 uvicorn 실행
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="localhost", port=8080)
 
 # uvicorn main:app --reload로 실행

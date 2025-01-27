@@ -12,14 +12,21 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/tf/*")
+=======
+@RequestMapping("/tf")
+>>>>>>> LYH
 public class RestReqController {
     @Autowired
     private WebClient webClient;
 
     @PostMapping("/service")
     public String detectService(MultipartFile file, String message){
+<<<<<<< HEAD
         System.out.println("java server_detect 시스템 실행----------");
+=======
+>>>>>>> LYH
         MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
         bodyBuilder.part("message", message);
         bodyBuilder.part("file", file.getResource());
@@ -28,7 +35,10 @@ public class RestReqController {
                 .body(BodyInserters.fromMultipartData(bodyBuilder.build()))
                 .retrieve().bodyToMono(String.class)
                 .block();
+<<<<<<< HEAD
         System.out.println("result 수행------");
+=======
+>>>>>>> LYH
         return result;
     }
 
