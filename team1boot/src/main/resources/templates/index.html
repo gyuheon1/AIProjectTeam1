@@ -1,52 +1,200 @@
 <!DOCTYPE html>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <html lang="en">
+=======
+<html lang="ko">
+>>>>>>> KJS
 <head>
   <meta charset="UTF-8">
-  <title>TF AI Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1조 TF Team Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .hero-section {
+        background-color: #0056b3;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        color: #0056b3;
+        margin-bottom: 1rem;
+    }
+
+    .section-padding {
+        padding: 80px 0;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+    }
+
+    .analysis-form {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+    }
+    footer {
+    margin-top: 0 !important;
+}
+
+footer h5 {
+    color: #fff;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+footer ul li {
+    margin-bottom: 0.5rem;
+    color: #adb5bd;
+}
+
+footer .text-muted {
+    color: #6c757d !important;
+}
+
+footer hr {
+    margin: 1rem 0;
+    opacity: 0.1;
+}
+
+footer i {
+    margin-right: 0.5rem;
+}
+  </style>
 </head>
 <body>
-<h1>TF AI Project</h1>
-<form method="post" enctype="multipart/form-data" id="fileUploadForm">
-  데이터 : <input type="text" name="message" value="test hello"><p></p>
-  파일 : <input type="file" name="file"><p></p>
-  <input type="button" value=" 비동기 요청 ">
-</form>
-<div id="result">여기에 요청 결과가 출력되어야 합니다.</div>
-<a href="ai">실시간 스트리밍</a>
-<script type="text/javascript">
-  var button = document.querySelector("input[type=button]");
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">MBC Python + Spring Boot AI</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#demo">Demo</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 히어로 섹션 -->
+<section class="hero-section" id="home">
+  <div class="container">
+    <h1 class="display-4 mb-4">1조 TF Team Project</h1>
+  </div>
+</section>
+
+<!-- About 섹션 -->
+<section class="section-padding" id="about">
+  <div class="container">
+    <h2 class="text-center mb-5">About</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <!--        <h3>프로젝트 소개</h3>-->
+        <!--        <p>프로젝트 소개를 적으세요 ^^</p>-->
+      </div>
+      <div class="col-md-6">
+        <!--        <h3>조원 소개</h3>-->
+        <!--        <p>인원 기입</p>-->
+      </div>
+      <div class="col-md-6">
+        <div class="analysis-form">
+          <h3>주요 기능</h3>
+          <ul>
+            <li>기능 1</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo 섹션 -->
+<section class="section-padding" id="demo">
+  <div class="container">
+    <h2 class="text-center mb-5">Demo</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="analysis-form">
+
+          <form method="post" enctype="multipart/form-data" id="fileUploadForm">
+            <div class="mb-4">
+              <label for="message" class="form-label">데이터 :</label>
+              <input type="text" class="form-control" name="message" value="test hello">
+            </div>
+            <div class="mb-4">
+              <label class="form-label">파일 :</label>
+              <div class="d-flex gap-2">
+                <input type="file" name="file" class="form-control">
+              </div>
+            </div>
+            <div class="mb-4">
+              <button type="button" class="btn btn-primary">비동기 요청</button>
+            </div>
+          </form>
+
+          <div id="result" class="mt-4">
+            여기에 요청 결과가 출력되어야 합니다.
+          </div>
+
+          <div class="mt-3">
+            <a href="ai" class="text-primary text-decoration-none">실시간 스트리밍</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  var button = document.querySelector("button[type=button]");
   button.addEventListener("click", function(){
       var form = document.getElementById("fileUploadForm")
       var form_data = new FormData(form)
-      button.disabled =true;
+      button.disabled = true;
 
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://localhost:80/java_service", true);
+      xhr.open("POST", "http://localhost:80/tf/service", true);
 
       xhr.onload = function(){
-          if(xhr.status >=200 && xhr.status < 300){
-          var response = JSON.parse(xhr.responseText);
-          var resultDiv = document.getElementById("result");
-          resultDiv.innerHTML = response.message + "<br>";
-          var img_src = "data:image/png;base64,"+response.image;
-          var img = document.createElement("img");
-          img.src = img_src;
-          resultDiv.appendChild(img);
-          button.disabled=false;
-          }else{
-              console.error("ERROR: " +xhr.statusText);
+          if(xhr.status >= 200 && xhr.status < 300){
+              var response = JSON.parse(xhr.responseText);
+              var resultDiv = document.getElementById("result");
+              resultDiv.innerHTML = response.message + "<br>";
+              var img_src = "data:image/png;base64," + response.image;
+              var img = document.createElement("img");
+              img.src = img_src;
+              resultDiv.appendChild(img);
+              button.disabled = false;
+          } else {
+              console.error("ERROR: " + xhr.statusText);
               alert("fail " + xhr.statusText);
               button.disabled = false;
-          }   //if문 완료
           }
+      }
+
       xhr.onerror = function(){
-          console.error("ERROR: " +xhr.statusText);
+          console.error("ERROR: " + xhr.statusText);
           alert("fail " + xhr.statusText);
           button.disabled = false;
       }
 
       xhr.send(form_data);
+<<<<<<< HEAD
       })
 =======
 <html lang="ko">
@@ -187,6 +335,92 @@
       result.innerHTML = `<div class="alert alert-success">분석 완료: "${input}"</div>`;
   }
 >>>>>>> LYH
+=======
+  });
+>>>>>>> KJS
 </script>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-4 mt-5">
+  <div class="container">
+    <div class="row">
+
+      <!-- Project INFO  -->
+      <div class="col-md-4 mb-3">
+        <h5>Python + Spring Boot AI Project</h5>
+        <p class="mb-0">1조 TF Team Project </p>
+
+        <small class="text-muted">© 2025 All rights reserved</small>
+      </div>
+
+      <!-- Team Member -->
+      <div class="col-md-4 mb-3">
+        <h5>Team Members</h5>
+        <ul class="list-unstyled">
+          <li>조장: 이규현</li>
+          <li>조원: 김지선</li>
+          <li>조원: 유병철</li>
+          <li>조원: 이영훈</li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-4 mb-3">
+        <h5>Contact</h5>
+        <ul class="list-unstyled">
+
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+          </svg> 조장 : 이규현
+          <a href="https://github.com/gyuheon1" class="text-decoration-none">
+            https://github.com/gyuheon1
+          </a><br>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+          </svg> 조원 : 김지선
+          <a href="https://github.com/jsKim-prog" class="text-decoration-none">
+            https://github.com/jsKim-prog
+          </a><br>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+          </svg> 조원 : 유병철
+          <a href="https://github.com/Leeyounghun94" class="text-decoration-none">
+            https://github.com/Leeyounghun94
+          </a><br>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+          </svg> 조원 : 이영훈
+          <a href="https://github.com/Leeyounghun94" class="text-decoration-none">
+            https://github.com/Leeyounghun94
+          </a><br><br>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+          </svg> Team Project GitHub
+          <a href="https://github.com/gyuheon1/AIProjectTeam1" class="text-decoration-none">
+            https://github.com/gyuheon1/AIProjectTeam1
+          </a><br>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 하단 구분 및 기타 -->
+    <div class="row mt-3">
+      <div class="col">
+        <hr class="bg-secondary">
+        <div class="text-center text-muted">
+          <small>Made with by 1조 TF Team | MBC Academy Education Suwon</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Icons 추가 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </body>
 </html>
