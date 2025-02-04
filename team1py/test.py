@@ -1,6 +1,6 @@
 import requests
 
-url = "http://영훈 IP :8080/detect"    # 요청 보낼 URL
+url = "http://백엔드 서버 IP 주소:8080/detect"    # 요청 보낼 URL
 message = "TEST Message"    # 서버로 전송할 메세지(폼 데이터로 전송)
 file_path = "test.JPG"      # 전송할 이미지 파일 경로(py와 같은 경로에 존재해야됨)
 
